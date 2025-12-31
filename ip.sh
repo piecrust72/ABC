@@ -3,19 +3,18 @@
 DB_FILE="$HOME/.ip_history.log"
 
 # Force Central Time (CST/CDT)
-TZ=America/Chicago
-NOW_DATE=$(TZ=$TZ date "+%m/%d/%Y")
-NOW_TIME=$(TZ=$TZ date "+%I:%M %p")
+export TZ=America/Chicago
+NOW_DATE=$(date "+%m/%d/%Y")
+NOW_TIME=$(date "+%I:%M %p")
 
 # Ensure DB exists FIRST
 touch "$DB_FILE"
 
 # Fetch JSON (no cache)
-JSON=$(curl -s \
-  -H "Cache-Control: no-cache, no-store, must-revalidate" \
-  -H "Pragma: no-cache" \
-  -H "Expires: 0" \
-  https://ipinfo.io/json)
+JSON=$(curl -s -H "Cache-Control: no-cache, no-store, must-revalidate" \
+                -H "Pragma: no-cache" \
+                -H "Expires: 0" \
+                https://ipinfo.io/json)
 
 # Parse JSON safely (BusyBox compatible)
 IP=$(echo "$JSON" | sed -n 's/.*"ip"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
