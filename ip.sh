@@ -1,8 +1,11 @@
 #!/bin/sh
 
 DB_FILE="$HOME/.ip_history.log"
-NOW_DATE=$(date "+%m/%d/%Y")
-NOW_TIME=$(date "+%I:%M %p")
+
+# Force Central Time (CST/CDT)
+TZ=America/Chicago
+NOW_DATE=$(TZ=$TZ date "+%m/%d/%Y")
+NOW_TIME=$(TZ=$TZ date "+%I:%M %p")
 
 # Ensure DB exists FIRST
 touch "$DB_FILE"
